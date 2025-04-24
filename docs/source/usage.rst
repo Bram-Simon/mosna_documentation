@@ -20,7 +20,7 @@ Alternatively without GPU:
   conda create --solver=libmamba -n mosna -c conda-forge python=3.10 scanpy
   conda activate mosna
 
-Install some essential dependencies:
+Then, install some essential dependencies:
 
 .. code-block:: console
 
