@@ -16,12 +16,14 @@ To install MOSNA for use with GPU compatible libraries:
 Alternatively without GPU:
 
 .. code-block:: console
+
   conda create --solver=libmamba -n mosna -c conda-forge python=3.10 scanpy
   conda activate mosna
 
 Install some essential dependencies:
 
 .. code-block:: console
+
   pip install ipykernel ipywidgets
   pip install tysserand
   cd /path/to/mosna_benchmark/
