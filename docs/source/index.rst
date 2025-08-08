@@ -30,5 +30,6 @@ Contents
 
 .. toctree::
 
+   mosna_at_a_glance
    getting_started
    api
