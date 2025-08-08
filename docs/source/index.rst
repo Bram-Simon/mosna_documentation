@@ -30,5 +30,5 @@ Contents
 
 .. toctree::
 
-   usage
+   getting_started
    api
