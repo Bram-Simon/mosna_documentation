@@ -1,0 +1,85 @@
+Theoretical Concepts
+==============
+
+
+Here, we provide some background on concepts such as assortativity and Delaunay triangulation.
+For practical examples of how to implement mosna, skip ahead to the next section.
+
+.. _installation:
+
+assortativity
+-------------
+
+
+
+
+
+Assortativity can be defined as a tendency of links to exist between nodes with similar attributes [1].
+With the advent of spatial methods at the single-cell level, assortativity has
+also become a topic of interest for the analysis of cellular networks. In this case, node
+attributes can be cellular phenotypes. Assortativity can then tell us something about
+which phenotypes are often found together (positive assortativity) and which phenotypes
+show avoidant behavior (negative assortativity). Interactions between neighboring cells
+are known to underpin many physiological processes, including immune responses [2].
+Hence, assortativity can potentially provide valuable insights into which interactions are
+occurring in specific samples. Since assortativity can be calculated for all phenotype pairs
+in a cellular network, we can obtain a large number of features and make cross-sample
+comparisons. Adding clinical data enables us to investigate which of these features have
+predictive power to predict target features in the clinical dataset.
+However, calculating assortativity is not a straightforward task. The relative proportion of cell types in the network affects the apparent assortativity: if there are many cells
+of the same type in a network, most of the edges in that network will be between cells of
+the same type [3]. As a result the network will appear very assortative [3]. To correct
+for this bias, MOSNA performs network attribute randomization, shuffling the assignment of values of each attribute to the cells [3]. With this method, the number of cells
+positive for each attribute and the links between the cells are preserved.
+In MOSNA, the ’N_shuffle’ parameter is used for this purpose, by specifying the number of randomizations. This process is then repeated N times. It is important to choose the
+number of randomizations high enough so that all phenotypes in a sample get satisfac24
+tory coverage. Especially when several cell types occur far fewer in a sample than others,
+interactions between these types are more rare. A higher number of randomizations is
+then required
+
+
+
+Delaunay Triangulation
+
+Which cells interact is determined by mosna using the physical distance between them.
+For this purpose, multiple distance metrics can be used. In our examples, we will use
+Delaunay triangulation, which is widely used in computational geometry, both in two and three
+dimensional space [4]. It divides a set of points into a triangle mesh (a set of triangles
+connected by their common edges). A max-min angle criterion is then imposed [4]. This
+requires that the diagonal of every convex quadrilateral — a four sided polygon that has
+interior angles smaller than 180 degrees each — is "chosen well" [4]. It is "chosen well",
+if replacing the diagonal by an alternative one does not increase the minimum of the six
+angles in the two triangles that make up the quadrilateral [4]. Hence, the Delaunay
+triangulation of a set of points (in a plane) will maximize the minimum angle in any
+triangle [4].
+
+
+
+
+.. code-block:: console
+
+  pip install ipykernel ipywidgets
+  pip install tysserand
+  cd /path/to/mosna_benchmark/
+  pip install -e .
+  pip install scipy==1.13
+
+
+
+
+
+
+
+references
+----------
+
+[1]. Xin Liu, Tsuyoshi Murata, and Ken Wakita. “Detecting network communities beyond assortativity-related attributes”. In: Physical Review E 90.1 (2014), p. 012806.
+
+[2]. Mark A Sellmyer et al. “Visualizing cellular interactions with a generalized proximity reporter”. In: Proceedings of the National Academy of Sciences 110.21 (2013),
+pp. 8567–8572.
+
+[3]. Alexis Coullomb and Vera Pancaldi. “mosna reveals different types of cellular interactions predictive of response to immunotherapies in cancer”. In: bioRxiv (2023),
+pp. 2023–03.
+
+[4].  Oleg R Musin. “Properties of the Delaunay triangulation”. In: Proceedings of the thirteenth annual symposium on Computational geometry. 1997, pp. 424–426.
+
