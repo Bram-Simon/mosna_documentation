@@ -32,4 +32,6 @@ Contents
 
    mosna_at_a_glance
    getting_started
+   basic_concepts
+   how_to_guids
    api
