@@ -1,5 +1,5 @@
-Getting Started
-===============
+How to Guides
+=============
 
 .. _installation:
 
