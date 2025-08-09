@@ -1,5 +1,5 @@
 Theoretical Concepts
-==============
+====================
 
 
 Here, we provide some background on concepts such as assortativity and Delaunay triangulation.
@@ -40,6 +40,7 @@ then required
 
 
 Delaunay Triangulation
+----------------------
 
 Which cells interact is determined by mosna using the physical distance between them.
 For this purpose, multiple distance metrics can be used. In our examples, we will use
