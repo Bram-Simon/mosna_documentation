@@ -46,7 +46,7 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
 
 .. image:: images/img1_tysserand_network.png
    :alt: Example result
-   :width: 400px
+   :width: 600px
    :align: center
 
 
@@ -58,7 +58,7 @@ Calculating Assortativity with mosna
 test
 
 .. code-block:: python
-  
+
   print("a")
 
 
