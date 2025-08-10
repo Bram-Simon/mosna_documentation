@@ -61,12 +61,13 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
 Calculating Assortativity with mosna
 ------------------------------------
 
-Assortativity analysis in mosna allows you to quantify the tendency of nodes with similar attributes to connect to each other in spatial networks. This is particularly useful for understanding cell-cell interactions and spatial organization patterns in single-cell data.
+Assortativity analysis in mosna allows you to quantify the tendency of nodes with similar
+attributes to connect to each other in spatial networks.
 
 Creating Mixing Matrices
 ------------------------
 
-Mixing matrices are fundamental data structures used to store and analyze assortativity scores in network analysis. In mosna, you can generate mixing matrices using the ``mixing_matrix()`` function, which depends on the ``count_edges_directed()`` function.
+In mosna, you can generate mixing matrices using the ``mixing_matrix()`` and ``count_edges_directed()`` functions.
 
 The ``mixing_matrix()`` function requires three main arguments:
 
@@ -123,7 +124,6 @@ The function uses logical operations to identify valid edge pairs. For each edge
         )
     )
 
-This approach ensures that edges are counted correctly regardless of the direction of the connection, which is essential for undirected network analysis.
 
 **Data Requirements**
 
