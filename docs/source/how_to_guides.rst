@@ -64,7 +64,7 @@ Calculating Assortativity with mosna
 Assortativity analysis in mosna allows you to quantify the tendency of nodes with similar attributes to connect to each other in spatial networks. This is particularly useful for understanding cell-cell interactions and spatial organization patterns in single-cell data.
 
 Creating Mixing Matrices
-~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 Mixing matrices are fundamental data structures used to store and analyze assortativity scores in network analysis. In mosna, you can generate mixing matrices using the ``mixing_matrix()`` function, which depends on the ``count_edges_directed()`` function.
 
@@ -86,7 +86,7 @@ The ``mixing_matrix()`` function requires three main arguments:
 **Important**: The edges DataFrame must contain exactly two columns named 'source' and 'target'. These column names are hardcoded in the mosna implementation and cannot be changed.
 
 How Mixing Matrices Work
-~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 The mixing matrix calculation process works as follows:
 
