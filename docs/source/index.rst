@@ -12,6 +12,9 @@ Some insightful examples are provided in the GitHub repository:
 Additional explanation on how to implement Mosna can be found here:  
 `Implementation guide <https://mosna-documentation.readthedocs.io/en/latest/how_to_guides.html>`_
 
+Furthermore, some background on concepts such as assortativity, which mosna uses to quantify preferential interactions
+between cell types can be found here:
+`Theoretical concepts <https://mosna-documentation.readthedocs.io/en/latest/theoretical_concepts.html>`_
 
 
 
