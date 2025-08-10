@@ -46,7 +46,7 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
 
 .. image:: images/img1_tysserand_network.png
    :alt: Example result
-   :width: 600px
+   :width: 94%
    :align: center
 
 
