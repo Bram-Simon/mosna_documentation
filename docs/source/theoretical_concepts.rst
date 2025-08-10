@@ -48,16 +48,7 @@ angles in the two triangles that make up the quadrilateral [4]_. Hence, the Dela
 triangulation of a set of points (in a plane) will maximize the minimum angle in any
 triangle [4]_.
 
-Example Installation
---------------------
 
-.. code-block:: console
-
-   pip install ipykernel ipywidgets
-   pip install tysserand
-   cd /path/to/mosna_benchmark/
-   pip install -e .
-   pip install scipy==1.13
 
 References
 ----------
