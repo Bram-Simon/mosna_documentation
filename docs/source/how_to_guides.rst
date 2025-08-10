@@ -50,7 +50,11 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
    :align: center
 
 
+.. raw:: html
 
+   <br><br>
+
+   
 
 Calculating Assortativity with mosna
 ------------------------------------
