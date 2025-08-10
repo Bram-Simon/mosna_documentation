@@ -1,21 +1,16 @@
-Mosna at a Glance
+Mosna 0.1.0 Documentation
 ===================================
-Mosna is a Python library designed for the analysis of spatial omics data in combination with clinical or biological metadata. It enables researchers to explore cellular interactions, tissue organization, and predictive biomarkers through an intuitive pipeline.
+Mosna is a Python library designed for the analysis of spatial omics data in combination with clinical or biological metadata.  
+It enables researchers to explore cellular interactions, tissue organization, and predictive biomarkers through an intuitive pipeline.
 
-Key Features:
+The scientific article describing Mosna can be found here:  
+`Mosna: Analysis of spatial omics data <https://pmc.ncbi.nlm.nih.gov/articles/PMC10055099/>`_
 
-✔ Compatible with major spatial omics platforms – Works with subcellular (e.g., MERFISH, CODEX) and spot-based (e.g., 10x Visium) data.
+Some insightful examples are provided in the GitHub repository:  
+`Mosna examples on GitHub <https://github.com/AlexCoul/mosna/tree/main/examples>`_
 
-✔ Network-based analysis – Leverages Tysserand for spatial network construction and integrates with Squidpy.
-
-✔ Quantitative spatial statistics – Computes assortativity, cellular neighborhoods (CNs), and other organizational metrics.
-
-✔ Clinical integration – Supports binary conditions (e.g., treatment response) and survival data for biomarker discovery.
-
-✔ Machine learning models integrated – Facilitates predictive modeling by identifying biologically relevant spatial features.
-
-Mosna simplifies complex spatial omics analyses, helping researchers uncover tissue architecture patterns and clinically meaningful insights.
-
+Additional explanation on how to implement Mosna can be found here:  
+`Implementation guide <https://mosna-documentation.readthedocs.io/en/latest/how_to_guides.html>`_
 
 
 
