@@ -25,7 +25,7 @@ we can use the following code to generate the network:
 The function ``build_delaunay`` calculates the edges of the network based on the Delaunay triangulation of the nodes.
 Now we are ready to plot the network using tysserand's built-in plotting functionality:
 
-.. code-block:: console
+.. code-block:: python
 
   # By calculating the distances, we can use the distance as a color-mapper.
   distances = ty.distance_neighbors(np_array_nodes, np_array_edges)
@@ -55,10 +55,9 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
 Calculating Assortativity with mosna
 ------------------------------------
 
+test
 
-...
-
-.. code-block:: console
+.. code-block:: python
   print("a")
 
 
