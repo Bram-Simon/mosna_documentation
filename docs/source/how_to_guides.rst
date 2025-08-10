@@ -53,8 +53,10 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
 .. raw:: html
 
    <br><br>
+   <br><br>
+   <br><br>
 
-   
+
 
 Calculating Assortativity with mosna
 ------------------------------------
