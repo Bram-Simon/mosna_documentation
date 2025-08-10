@@ -61,10 +61,76 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
 Calculating Assortativity with mosna
 ------------------------------------
 
-test
+Assortativity analysis in mosna allows you to quantify the tendency of nodes with similar attributes to connect to each other in spatial networks. This is particularly useful for understanding cell-cell interactions and spatial organization patterns in single-cell data.
+
+Creating Mixing Matrices
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Mixing matrices are fundamental data structures used to store and analyze assortativity scores in network analysis. In mosna, you can generate mixing matrices using the ``mixing_matrix()`` function, which depends on the ``count_edges_directed()`` function.
+
+The ``mixing_matrix()`` function requires three main arguments:
+
+- **nodes**: A pandas DataFrame containing one-hot-encoded attributes for each node in the network
+- **edges**: A pandas DataFrame containing edge information with two columns named 'source' (node 1) and 'target' (node 2)
+- **attributes**: A list containing all unique attributes (e.g., cell phenotypes, cluster labels) to analyze
 
 .. code-block:: python
 
-  print("a")
+    # Example usage of mixing_matrix function
+    mixing_matrix_result = mosna.mixing_matrix(
+        nodes=nodes_df,
+        edges=edges_df,
+        attributes=phenotype_list
+    )
+
+**Important**: The edges DataFrame must contain exactly two columns named 'source' and 'target'. These column names are hardcoded in the mosna implementation and cannot be changed.
+
+How Mixing Matrices Work
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The mixing matrix calculation process works as follows:
+
+1. **Matrix Initialization**: A square matrix is created with dimensions equal to the number of unique attributes
+2. **Edge Counting**: For each position (i, j) in the matrix, the function counts the number of edges between nodes with attributes i and j
+3. **Undirected Analysis**: The ``count_edges_undirected()`` function is used to ensure that edges are counted regardless of direction
+
+The core calculation for each matrix position follows this pattern:
+
+.. code-block:: python
+
+    # For each attribute combination (i, j)
+    mixmat[i, j] = count_edges_undirected(
+        nodes, 
+        edges, 
+        attributes=[attributes[i], attributes[j]]
+    )
+
+**Logical Operations for Edge Detection**
+
+The function uses logical operations to identify valid edge pairs. For each edge, it checks if the source and target nodes have the specified attributes:
+
+.. code-block:: python
+
+    # Example of the logical operations used internally
+    pairs = np.logical_or(
+        np.logical_and(
+            nodes.loc[edges['source'], attributes[0]].values,
+            nodes.loc[edges['target'], attributes[1]].values
+        ),
+        np.logical_and(
+            nodes.loc[edges['target'], attributes[0]].values,
+            nodes.loc[edges['source'], attributes[1]].values
+        )
+    )
+
+This approach ensures that edges are counted correctly regardless of the direction of the connection, which is essential for undirected network analysis.
+
+**Data Requirements**
+
+- **One-hot encoding**: Node attributes must be one-hot encoded in the nodes DataFrame
+- **Consistent indexing**: The node indices in the edges DataFrame must correspond to the row indices in the nodes DataFrame
+- **Unique attributes**: The attributes list should contain all unique phenotypes or cluster labels you want to analyze
+
+This mixing matrix approach provides a robust foundation for calculating various assortativity metrics and understanding spatial organization patterns in your single-cell data.
 
 
