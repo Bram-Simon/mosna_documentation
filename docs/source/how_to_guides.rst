@@ -52,4 +52,13 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
 
 
 
+Calculating Assortativity with mosna
+------------------------------------
+
+
+...
+
+.. code-block:: console
+  print("a")
+
 
