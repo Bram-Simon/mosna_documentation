@@ -95,7 +95,7 @@ The mixing matrix calculation process works as follows:
 2. **Edge Counting**: For each position (i, j) in the matrix, the function counts the number of edges between nodes with attributes i and j
 3. **Undirected Analysis**: The ``count_edges_undirected()`` function is used to ensure that edges are counted regardless of direction
 
-The core calculation for each matrix position follows this pattern:
+We can now populate the mixing matrix as follows:
 
 .. code-block:: python
 
@@ -106,9 +106,10 @@ The core calculation for each matrix position follows this pattern:
         attributes=[attributes[i], attributes[j]]
     )
 
-**Logical Operations for Edge Detection**
+**Calculate Edges**
 
-The function uses logical operations to identify valid edge pairs. For each edge, it checks if the source and target nodes have the specified attributes:
+The function uses logical operations to identify valid edge pairs.
+For each edge, it checks if the source and target nodes have the specified attributes:
 
 .. code-block:: python
 
