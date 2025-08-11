@@ -1,9 +1,4 @@
-Template for the Read the Docs tutorial
-=======================================
+Read the Docs Documentation for Mosna
+=====================================
 
-This GitHub template includes fictional Python library
-with some basic Sphinx docs.
-
-Read the tutorial here:
-
-https://docs.readthedocs.io/en/stable/tutorial/
+Access the documentation here: https://mosna-documentation.readthedocs.io/en/latest/
