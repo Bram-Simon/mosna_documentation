@@ -132,6 +132,4 @@ For each edge, it checks if the source and target nodes have the specified attri
 - **Consistent indexing**: The node indices in the edges DataFrame must correspond to the row indices in the nodes DataFrame
 - **Unique attributes**: The attributes list should contain all unique phenotypes or cluster labels you want to analyze
 
-This mixing matrix approach provides a robust foundation for calculating various assortativity metrics and understanding spatial organization patterns in your single-cell data.
-
 
