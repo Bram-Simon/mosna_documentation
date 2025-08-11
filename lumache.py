@@ -1,5 +1,5 @@
 """
-Lumache - Python library for cooks and food lovers.
+Mosna - Python library for analyzing spatial omics data with respect to clinical or biological data.
 """
 
 __version__ = "0.1.0"
