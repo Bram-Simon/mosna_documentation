@@ -154,7 +154,7 @@ Next, we generate a simple histogram for quality control
 
 .. code-block:: python
 
-obj_transfo[marker_cols].hist(bins=50, figsize=(20, 20));
+  obj_transfo[marker_cols].hist(bins=50, figsize=(20, 20));
 
 
 
