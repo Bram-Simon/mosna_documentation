@@ -220,10 +220,46 @@ while preserving the present biological variation.
 
 
 
+
+Comparing Response Groups and Survival analysis
+-----------------------------------------------
+
+
+
+
+**Differential Analysis between Response Groups**
+
+First, we will investigate how differences in fractional abundance of cell-types are associated to differences in response:
+
+.. code-block:: python
+
+  pvals = mosna.find_DE_markers(prop_types, group_ref=1, group_tgt=2, group_var=group_col)
+
+Now that we have calculated the p-values, which are corrected for the false discovery rate (FDR), we can visualize the differences between different patient groups.
+
+.. code-block:: python
+
+  fig, ax = mosna.plot_distrib_groups(
+      prop_types, 
+      group_var=group_col,
+      groups=[1, 2], 
+      pval_data=pvals, 
+      pval_col='pval', 
+      max_cols=-1, 
+      multi_ind_to_col=True,
+      group_names=group_names,
+      )
+  fig.suptitle("Cell type proportions per response group", y=1.0);
+
+
+
+
+
 Assortativity and Mixing Matrices
 ---------------------------------
 
-Assortativity analysis in mosna allows you to quantify preferential interactions between nodes with different attributes, such as cell types.
+After looking at the fractional cell abundances, we move towards the next step of complexity: patterns of preferential interactions between cell-types.
+Assortativity analysis in mosna allows you to quantify preferential interactions between nodes with different attributes (e.g. cell types).
 Moreover, z-scores can be calculated to show the statistical significance of these preferential interactions.
 These assortativity z-scores can be ordered in a mixing matrix.
 An example is provided in the figure below, where we have used cell phenotypes as attributes.
