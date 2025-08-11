@@ -126,6 +126,100 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
 
 
 
+
+
+
+Data Transformation and Batch Correction
+----------------------------------------
+
+To normalize marker expression data, we can apply centered log-ratio (CLR) transformation:
+
+.. code-block:: python
+
+    obj_transfo = mosna.transform_data(
+    data=obj, 
+    groups=sample_col,
+    use_cols=marker_cols,
+    method='clr')
+
+
+- ``groups=sample_col`` creates groups to ensure that the transformations are applied to each sample separately
+- ``use_cols=marker_cols`` specifies which columns contain marker expression data (as only these need to be normalized)
+
+
+
+**Visualization for Quality Control**
+
+Next, we generate a simple histogram for quality control
+
+.. code-block:: python
+
+obj_transfo[marker_cols].hist(bins=50, figsize=(20, 20));
+
+
+
+**Network Node Transformation and aggregation**
+
+We apply the same correction to the network node data. Then we aggregate the nodes
+
+.. code-block:: python
+
+  nodes_dir = mosna.transform_nodes(
+      nodes_dir=nodes_dir,
+      id_level_1='patient',
+      id_level_2='sample', 
+      use_cols=marker_cols,
+      method='clr',
+      save_dir='auto',
+  )
+  nodes_agg = mosna.aggregate_nodes(
+      nodes_dir=nodes_dir,
+      use_cols=marker_cols,
+  )
+
+This combines all the nodes in the transformed network into a single data set. We can then assess and correct batch effects.
+
+
+**Dimensionality reduction**
+
+We create a UMAP for visual assessment of the batch effects, before correcting them.
+
+.. code-block:: python
+
+  embed_viz, _ = mosna.get_reducer(nodes_agg[marker_cols], nodes_dir)
+  fig, ax, color_mapper = mosna.plot_clusters(
+      embed_viz, 
+      cluster_labels=nodes_agg['patient'], 
+      save_dir=None,
+      return_cmap=True,
+      show_id=False,
+  )
+
+  fig, ax, color_mapper = mosna.plot_clusters(
+      embed_viz, 
+      cluster_labels=nodes_agg['sample'], 
+      save_dir=None,
+      return_cmap=True,
+      show_id=False,
+  )
+
+
+**Batch Effect Correction**
+
+Now we can apply the batch effect correction. In this step, the systematic differences between patients/samples are removed,
+while preserving the present biological variation.
+
+.. code-block:: python
+
+  nodes_dir, nodes_corr = mosna.batch_correct_nodes(
+      nodes_dir=nodes_dir,
+      use_cols=marker_cols,
+      batch_key='patient',
+      return_nodes=True,
+  )
+
+
+
 Assortativity and Mixing Matrices
 ---------------------------------
 
