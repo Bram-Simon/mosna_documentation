@@ -14,6 +14,7 @@ In particular, the following features are explored, in order of increasing compl
 
 Mosna leverages the tysserand library to discover patterns of cellular interaction that are potentially clinically relevant.
 In this how-to guide we discuss how to:
+
 - generate and visualize spatial networks with tysserand
 - calculate assortativity scores that quantify preferential interactions with mosna
 - generate mixing matrices with mosna
