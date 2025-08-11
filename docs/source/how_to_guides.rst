@@ -251,6 +251,15 @@ Now that we have calculated the p-values, which are corrected for the false disc
       )
   fig.suptitle("Cell type proportions per response group", y=1.0);
 
+An example result is shown in the image below:
+
+.. image:: images/img3_responder_non_responder_example.png
+   :alt: Example result
+   :width: 94%
+   :align: center
+
+
+
 
 
 
