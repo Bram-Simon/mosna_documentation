@@ -262,6 +262,13 @@ The ``mixing_matrix()`` function initializes the mixing matrix, and requires thr
 
 **Important**: The edges DataFrame must contain exactly two columns named 'source' and 'target'. The ``mixing_matrix()`` function uses these names internally, so they cannot be changed.
 
+Furthermore, it is important to keep the following requirements on the input data in mind:
+
+- **One-hot encoding**: Node attributes must be one-hot encoded in the nodes DataFrame
+- **Consistent indexing**: The node indices in the edges DataFrame must correspond to the row indices in the nodes DataFrame
+- **Unique attributes**: The attributes list should contain all unique phenotypes or cluster labels you want to analyze
+
+
 Subsequently, we can populate the mixing matrix as follows:
 
 .. code-block:: python
@@ -274,10 +281,7 @@ Subsequently, we can populate the mixing matrix as follows:
     )
 
 
-**Data Requirements**
 
-- **One-hot encoding**: Node attributes must be one-hot encoded in the nodes DataFrame
-- **Consistent indexing**: The node indices in the edges DataFrame must correspond to the row indices in the nodes DataFrame
-- **Unique attributes**: The attributes list should contain all unique phenotypes or cluster labels you want to analyze
+
 
 
