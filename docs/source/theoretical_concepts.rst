@@ -10,23 +10,29 @@ Assortativity
 -------------
 
 Assortativity can be defined as a tendency of links to exist between nodes with similar attributes [1]_.
-With the advent of spatial methods at the single-cell level, assortativity has
-also become a topic of interest for the analysis of cellular networks. In this case, node
-attributes can be cellular phenotypes. Assortativity can then tell us something about
-which phenotypes are often found together (positive assortativity) and which phenotypes
-show avoidant behavior (negative assortativity). Interactions between neighboring cells
+It is a general measure of preferential interactions between nodes that share the same attributes, expressed as a single scalar value.
+These attributes can, for example, be cell type labels or marker positiveness.
+In mosna, assortativity is used to quantify preferential interactions between different cell types or spots (attributes),
+where attributes that are often found together have a positive assortativity value those that
+show avoidant behavior a negative assortativity value.
+
+Interactions between neighboring cells
 are known to underpin many physiological processes, including immune responses [2]_.
 Hence, assortativity can potentially provide valuable insights into which interactions are
-occurring in specific samples. Since assortativity can be calculated for all phenotype pairs
-in a cellular network, we can obtain a large number of features and make cross-sample
+occurring in resected tissue that is analyzed with any type of spatial imaging technique.
+Since assortativity can be calculated for all attribute pairs
+in a cellular network, it is possible to obtain a large number of features and make cross-sample
 comparisons. Adding clinical data enables us to investigate which of these features have
 predictive power to predict target features in the clinical dataset.
+This could enable biomarker discovery.
+
+**Network Attribute Randomization**
 
 However, calculating assortativity is not a straightforward task. The relative proportion of cell types in the network affects the apparent assortativity: if there are many cells
 of the same type in a network, most of the edges in that network will be between cells of
 the same type [3]_. As a result the network will appear very assortative [3]_. To correct
-for this bias, MOSNA performs network attribute randomization, shuffling the assignment of values of each attribute to the cells [3]_. With this method, the number of cells
-positive for each attribute and the links between the cells are preserved.
+for this, MOSNA performs network attribute randomization, shuffling the assignment of values of each attribute to the cells [3]_.
+With this method, the number of cells that are positive for each attribute and the links between the cells are preserved.
 
 In MOSNA, the 'N_shuffle' parameter is used for this purpose, by specifying the number of randomizations. This process is then repeated N times. It is important to choose the
 number of randomizations high enough so that all phenotypes in a sample get satisfactory coverage. Especially when several cell types occur far fewer in a sample than others,
@@ -36,7 +42,7 @@ then required.
 Delaunay Triangulation
 ----------------------
 
-Which cells interact is determined by mosna using the physical distance between them.
+Which nodes in a network are considered to interact is determined by mosna using the physical distance between them.
 For this purpose, multiple distance metrics can be used. In our examples, we will use
 Delaunay triangulation, which is widely used in computational geometry, both in two and three
 dimensional space [4]_. It divides a set of points into a triangle mesh (a set of triangles
