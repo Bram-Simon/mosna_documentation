@@ -264,8 +264,7 @@ An example result is shown in the image below:
 
 
 
-Assortativity and Mixing Matrices
----------------------------------
+**Assortativity and Mixing Matrices**
 
 After looking at the fractional cell abundances, we move towards the next step of complexity: patterns of preferential interactions between cell-types.
 Assortativity analysis in mosna allows you to quantify preferential interactions between nodes with different attributes (e.g. cell types).
