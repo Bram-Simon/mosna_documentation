@@ -2,9 +2,6 @@ How to Guides
 =============
 
 
-
-
-
 Tysserand
 ---------
 
@@ -22,7 +19,7 @@ we can use the following code to generate the network:
   np_array_nodes = df_nodes.values
   np_array_edges = ty.build_delaunay(np_array_nodes)
 
-The function ``build_delaunay`` calculates the edges of the network based on the Delaunay triangulation of the nodes.
+The function ``build_delaunay`` calculates the edges of the network based on the physical distance of the nodes using the Delaunay triangulation.
 Now we are ready to plot the network using tysserand's built-in plotting functionality:
 
 .. code-block:: python
@@ -35,7 +32,8 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
         np_array_edges, 
         distances, 
         labels=df_cluster_id, 
-        figsize=(100,100), 
+        figsize=(100,100)     # The resolution of the resulting image depends on this. Notice that (100, 100) will generate a very detailed network, 
+                              # but may require significant computational time for generating the network.
         legend_opt={'fontsize': 52, 'bbox_to_anchor': (0.96, 1), 'loc': 'upper left'},
         size_nodes=60,
         color_mapper=color_mapper,
@@ -58,18 +56,32 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
 
 
 
-Calculating Assortativity with mosna
-------------------------------------
+Assortativity and Mixing Matrices
+---------------------------------
 
-Assortativity analysis in mosna allows you to quantify the tendency of nodes with similar
-attributes to connect to each other in spatial networks.
+Assortativity analysis in mosna allows you to quantify preferential interactions between nodes with different attributes, such as cell types.
+Moreover, z-scores can be calculated to show the statistical significance of these preferential interactions.
+These assortativity z-scores can be ordered in a mixing matrix.
+An example is provided in the figure below, where we have used cell phenotypes as attributes.
 
-Creating Mixing Matrices
-------------------------
 
-In mosna, you can generate mixing matrices using the ``mixing_matrix()`` and ``count_edges_directed()`` functions.
 
-The ``mixing_matrix()`` function requires three main arguments:
+
+.. image:: images/img2_mixmat_example.png
+   :alt: Example result
+   :width: 94%
+   :align: center
+
+
+In a mixing matrix, the attributes (phenotypes) are placed on both the x- and the y-axis.
+Each cell in the matrix represents the assortativity z-score between the corresponding attributes.
+In our example above, for example, neutrophils are preferentially interacting amongst themselves (top left cell),
+whereas neutrophils and regulatory T-cells show avoidant behavior (bottom left cell).
+
+
+
+To generate these mixing matrices, mosna makes use of the functions ``mixing_matrix()`` and ``count_edges_directed()``.
+The ``mixing_matrix()`` function initializes the mixing matrix, and requires three main arguments:
 
 - **nodes**: A pandas DataFrame containing one-hot-encoded attributes for each node in the network
 - **edges**: A pandas DataFrame containing edge information with two columns named 'source' (node 1) and 'target' (node 2)
@@ -78,24 +90,15 @@ The ``mixing_matrix()`` function requires three main arguments:
 .. code-block:: python
 
     # Example usage of mixing_matrix function
-    mixing_matrix_result = mosna.mixing_matrix(
+    mixmat = mosna.mixing_matrix(
         nodes=nodes_df,
         edges=edges_df,
         attributes=phenotype_list
     )
 
-**Important**: The edges DataFrame must contain exactly two columns named 'source' and 'target'. These column names are hardcoded in the mosna implementation and cannot be changed.
+**Important**: The edges DataFrame must contain exactly two columns named 'source' and 'target'. The ``mixing_matrix()`` function uses these names internally, so they cannot be changed.
 
-How Mixing Matrices Work
-------------------------
-
-The mixing matrix calculation process works as follows:
-
-1. **Matrix Initialization**: A square matrix is created with dimensions equal to the number of unique attributes
-2. **Edge Counting**: For each position (i, j) in the matrix, the function counts the number of edges between nodes with attributes i and j
-3. **Undirected Analysis**: The ``count_edges_undirected()`` function is used to ensure that edges are counted regardless of direction
-
-We can now populate the mixing matrix as follows:
+Subsequently, we can populate the mixing matrix as follows:
 
 .. code-block:: python
 
@@ -104,25 +107,6 @@ We can now populate the mixing matrix as follows:
         nodes, 
         edges, 
         attributes=[attributes[i], attributes[j]]
-    )
-
-**Calculate Edges**
-
-The function uses logical operations to identify valid edge pairs.
-For each edge, it checks if the source and target nodes have the specified attributes:
-
-.. code-block:: python
-
-    # Example of the logical operations used internally
-    pairs = np.logical_or(
-        np.logical_and(
-            nodes.loc[edges['source'], attributes[0]].values,
-            nodes.loc[edges['target'], attributes[1]].values
-        ),
-        np.logical_and(
-            nodes.loc[edges['target'], attributes[0]].values,
-            nodes.loc[edges['source'], attributes[1]].values
-        )
     )
 
 
