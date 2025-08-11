@@ -2,6 +2,24 @@ How to Guides
 =============
 
 
+Mosna proposes a pipeline to explore increasingly complex features in relation with clinical data.
+It can be used to extract and visualize descriptive statistics, and to identify features that are most
+predictive of clinical variables, by training machine learning models.
+In particular, the following features are explored, in order of increasing complexity:
+
+- Fractional abundance of cellular phenotypes
+- Preferential interractions between different phenotypes (quantified with assortativity z-scores)
+- Cellular niches
+
+
+Mosna leverages the tysserand library to discover patterns of cellular interaction that are potentially clinically relevant.
+In this how-to guide we discuss how to:
+- generate and visualize spatial networks with tysserand
+- calculate assortativity scores that quantify preferential interactions with mosna
+- generate mixing matrices with mosna
+- identify and visualize cellular niches with mosna (to do)
+
+
 Tysserand
 ---------
 
