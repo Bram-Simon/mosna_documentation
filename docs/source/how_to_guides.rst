@@ -21,8 +21,8 @@ In this how-to guide we discuss how to:
 - identify and visualize cellular niches with mosna (to do)
 
 
-Tysserand
----------
+Generate and Visualize Spatial Networks
+---------------------------------------
 
 Tysserand generates computational networks that can subsequently be analyzed with mosna.
 To generate such networks with tysserand, we need to provide it with the spatial coordinates of the nodes, which can either be individual cells
@@ -39,6 +39,57 @@ we can use the following code to generate the network:
   np_array_edges = ty.build_delaunay(np_array_nodes)
 
 The function ``build_delaunay`` calculates the edges of the network based on the physical distance of the nodes using the Delaunay triangulation.
+
+
+
+**Use Trimming to Improve Network Construction**
+
+Next, we will refine the network by removing long-distance connections, which are unlikely to represent real cellular interactions.
+
+.. code-block:: python
+
+  pairs = ty.build_delaunay(
+        coords, 
+        node_adaptive_trimming=True, 
+        n_edges=3, 
+        trim_dist_ratio=2,
+        min_dist=0, 
+        trim_dist=150,
+    )
+
+- ``node_adaptive_trimming=True`` enables the removal of edges based on distance
+- ``n_edges=3`` ensures that each node has at least 3 connections
+- ``trim_dist`` defines the maximum allowed edge length, in this case 150
+- ``trim_dist_ratio=2`` sets distance ratio to help define which edges need to be removed
+
+
+**Color Mapping**
+
+Given a set of unique attributes (e.g. phenotypes) ``uniq``, we can generate a color mapping as follows.
+
+.. code-block:: python
+
+  clusters_cmap = mosna.make_cluster_cmap(uniq)
+  celltypes_color_mapper = {x: clusters_cmap[i % n_colors] for i, x in enumerate(uniq)}
+
+
+When visualizing the network, this color mapping will be used to give each node a color that corresponds to its attribute (e.g. phenotype)
+
+
+
+**Handling Isolated Cells**
+
+Solitary nodes can be removed as follows:
+
+.. code-block:: python
+
+  pairs = ty.link_solitaries(np_array_nodes, np_array_edges, method='delaunay', min_neighbors=3)
+
+
+
+
+**Visualization of Network**
+
 Now we are ready to plot the network using tysserand's built-in plotting functionality:
 
 .. code-block:: python
