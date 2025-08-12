@@ -7,7 +7,7 @@ It can be used to extract and visualize descriptive statistics, and to identify 
 predictive of clinical variables, by training machine learning models.
 In particular, the following features are explored, in order of increasing complexity:
 
-- Fractional abundance of cellular phenotypes (composition)
+- Proportional abundance of cellular phenotypes, and proportional abundance ratios (composition)
 - Preferential interractions between different phenotypes, quantified with assortativity z-scores (network topology)
 - Cellular niches
 
@@ -304,7 +304,66 @@ An example result is shown in the image below:
    :align: center
 
 
+In this case, there are no significant differences in cell-type abundance between the response and non-response groups.
 
+
+**Proportional Abundance Ratios**
+
+Still considering composition, we will now introduce the next level of complexity: proportional abundance ratios.
+Two individually non-significant differences in proportional abundance between the response and non-response groups may combine into
+a significant shift in their ratio, especially when abundance ratios share correlated noise that cancels out.
+
+To compare ratios of proportional abundance, we can use mosna's ``make_composed_variables()`` function. 
+
+
+.. code-block:: python
+
+  composed_variables = mosna.make_composed_variables(prop_types, method='ratio', order=1)
+  prop_types_comp = pd.concat([prop_types, composed_variables], axis=1)
+  pvals = mosna.find_DE_markers(prop_types_comp, group_ref=1, group_tgt=2, group_var=group_col)
+
+
+We clean up the data, removing NaNs, imputing missing values:
+
+.. code-block:: python
+
+  prop_types_comp_cleaned, select_finite = mosna.clean_data(
+    prop_types_comp, 
+    method='mixed',
+    thresh=0.9,
+    )
+
+As before, we can now leverage mosna's ``find_DE_markers`` function, now on the ratios of proportional cell type abundance.
+
+.. code-block:: python
+
+  pvals_cleaned = mosna.find_DE_markers(prop_types_comp_cleaned, group_ref=1, group_tgt=2, group_var=group_col)
+
+
+Now we can again compare the groups:
+
+.. code-block:: python
+
+  fig, ax = mosna.plot_distrib_groups(
+      prop_types_comp_cleaned, 
+      group_var=group_col,
+      groups=[1, 2], 
+      pval_data=pvals_cleaned, 
+      pval_col='pval', 
+      max_cols=20, 
+      multi_ind_to_col=True,
+      group_names=group_names,
+      )
+  fig.suptitle("Ratio of cell type proportions per response group (imputed)", y=1.0);
+
+This results in the following figure:
+
+.. image:: images/img4_ratio_comparison.png
+   :alt: Example result
+   :width: 94%
+   :align: center
+
+Now we find 6 significant differences in propotional abundance ratios between responders and non-responders.
 
 
 
@@ -316,6 +375,8 @@ Assortativity analysis in mosna allows you to quantify preferential interactions
 Moreover, z-scores can be calculated to show the statistical significance of these preferential interactions.
 These assortativity z-scores can be ordered in a mixing matrix.
 An example is provided in the figure below, where we have used cell phenotypes as attributes.
+
+
 
 
 
