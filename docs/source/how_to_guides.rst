@@ -224,6 +224,13 @@ while preserving the present biological variation.
 Comparing Response Groups and Survival analysis
 -----------------------------------------------
 
+Mosna can help identify differences in the immune landscape between the groups, through comparisons between response groups.
+As outlined earlier, we will compare increasingly complex characteristics (compositional differences -> assortativity -> niches)
+We will start by comparing compositional differences.
+In our example, we compare two groups: responders, and non-responders.
+We make use of a spatially resolved proteomic data set of Cutaneous T-Cell Lymphoma (CTCL), which was generated using CODEX technology on 70
+samples from 14 different patients [1]_. Of these patients, 7 responded, and 7 did not respond to treatment with anti-PD-1 immunotherapy [1]_.
+
 
 
 
@@ -327,5 +334,8 @@ Subsequently, we can populate the mixing matrix as follows:
 
 
 
+References
+----------
 
+.. [1] Phillips, D., Matusiak, M., Gutierrez, B. R., Bhate, S. S., Barlow, G. L., Jiang, S., ... & Nolan, G. P. (2021). Immune cell topography predicts response to PD-1 blockade in cutaneous T cell lymphoma. Nature communications, 12(1), 6726.
 

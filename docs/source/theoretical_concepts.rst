@@ -59,10 +59,10 @@ triangle [4]_.
 References
 ----------
 
-.. [1] Xin Liu, Tsuyoshi Murata, and Ken Wakita. "Detecting network communities beyond assortativity-related attributes". In: Physical Review E 90.1 (2014), p. 012806.
+.. [1] Liu, X., Murata, T., & Wakita, K. (2014). Detecting network communities beyond assortativity-related attributes. Physical Review E, 90(1), 012806.
 
-.. [2] Mark A Sellmyer et al. "Visualizing cellular interactions with a generalized proximity reporter". In: Proceedings of the National Academy of Sciences 110.21 (2013), pp. 8567–8572.
+.. [2] Sellmyer, M. A., Bronsart, L., Imoto, H., Contag, C. H., Wandless, T. J., & Prescher, J. A. (2013). Visualizing cellular interactions with a generalized proximity reporter. Proceedings of the National Academy of Sciences, 110(21), 8567-8572.
 
-.. [3] Alexis Coullomb and Vera Pancaldi. "mosna reveals different types of cellular interactions predictive of response to immunotherapies in cancer". In: bioRxiv (2023), pp. 2023–03.
+.. [3] Coullomb, A., & Pancaldi, V. (2023). mosnareveals different types of cellular interactions predictive of response to immunotherapies in cancer.
 
-.. [4] Oleg R Musin. "Properties of the Delaunay triangulation". In: Proceedings of the thirteenth annual symposium on Computational geometry. 1997, pp. 424–426.
+.. [4] Musin, O. R. (1997, August). Properties of the Delaunay triangulation. In Proceedings of the thirteenth annual symposium on Computational geometry (pp. 424-426).
