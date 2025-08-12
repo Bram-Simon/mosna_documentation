@@ -1,0 +1,10 @@
+/* Apply to all paragraphs */
+body {
+    text-align: justify;
+}
+
+/* Optional: improve spacing between words */
+p {
+    text-align: justify;
+    text-justify: inter-word; /* Better word spacing for justification */
+}
