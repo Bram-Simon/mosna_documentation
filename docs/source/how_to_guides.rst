@@ -373,6 +373,24 @@ This results in the following figure, which includes significant differences bet
 Now we find 6 significant differences in propotional abundance ratios between responders and non-responders.
 
 
+**Second Order Ratios**
+
+Additionally, second order ratios (i.e. the ratios of proportional abundance ratios) can be calculated using a similar approach.
+Again, we use mosna's ``make_composed_variables`` function, but now we set the order parameter to 2.
+
+
+.. code-block:: python
+
+  composed_variables = mosna.make_composed_variables(prop_types, method='ratio', order=2)
+  prop_types_comp = pd.concat([prop_types, composed_variables], axis=1)
+  pvals = mosna.find_DE_markers(prop_types_comp, group_ref=1, group_tgt=2, group_var=group_col)
+
+When producing second order ratios, equivalent and inverse ratios are avoided.
+For example, (a/b)/(c/d) is included, but (a/c)/(b/d) not, as this would be the inverse.
+(a/b)/(a/d) will be excluded, as it simplifies to (d/b), which is a first order ratio.
+
+Higher order ratios are currently not incorporated.
+
 
 
 **Assortativity and Mixing Matrices**
