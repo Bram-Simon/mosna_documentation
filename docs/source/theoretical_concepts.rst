@@ -2,7 +2,7 @@ Theoretical Concepts
 ====================
 
 Here, we provide some background on concepts such as assortativity and Delaunay triangulation.
-For practical examples of how to implement mosna, skip ahead to the 'How to Guides': `<https://mosna-documentation.readthedocs.io/en/latest/how_to_guides.html>`_
+For practical examples of how to implement mosna, skip ahead to the `How to Guides <https://mosna-documentation.readthedocs.io/en/latest/how_to_guides.html>`_
 
 .. _assortativity:
 
