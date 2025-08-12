@@ -7,8 +7,8 @@ It can be used to extract and visualize descriptive statistics, and to identify 
 predictive of clinical variables, by training machine learning models.
 In particular, the following features are explored, in order of increasing complexity:
 
-- Fractional abundance of cellular phenotypes
-- Preferential interractions between different phenotypes (quantified with assortativity z-scores)
+- Fractional abundance of cellular phenotypes (composition)
+- Preferential interractions between different phenotypes, quantified with assortativity z-scores (network topology)
 - Cellular niches
 
 
@@ -236,7 +236,45 @@ samples from 14 different patients [1]_. Of these patients, 7 responded, and 7 d
 
 **Differential Analysis between Response Groups**
 
-First, we will investigate how differences in fractional abundance of cell-types are associated to differences in response:
+First, we will investigate how compositional differences are associated to differences in response.
+To do so, we start by defining the response and non-response groups:
+
+
+.. code-block:: python
+
+  group_names = {1: "responder", 2: "non-responder"}
+
+
+Next, we add attributes to nodes by creating binary indicator variables for each cell type. This enables us to filter and color network visualizations
+in subsequent steps.
+
+.. code-block:: python
+
+  nodes_all = obj[pos_cols + [pheno_col]].copy()
+  nodes_all = nodes_all.join(pd.get_dummies(obj[pheno_col]))
+  uniq_phenotypes = nodes_all[pheno_col].unique() 
+
+
+
+Then, we use ``patient_col`` to aggregate statistics per patient and condition:
+
+.. code-block:: python
+
+  count_types = obj[[patient_col, group_col, 'Count']].join(nodes_all[pheno_col]).groupby([patient_col, group_col, pheno_col]).count().unstack()
+  count_types.columns = count_types.columns.droplevel()
+  count_types = count_types.fillna(value=0).astype(int)
+
+
+Subsequently, we count cell types, and calculate the proportional cell type abundances.
+
+.. code-block:: python
+
+  total_count_types = count_types.sum().sort_values(ascending=False)
+  prop_types = count_types.div(count_types.sum(axis=1), axis=0)
+  total_prop_types = total_count_types / total_count_types.sum()
+
+
+We are now ready to perform the differential analysis between response groups, using mosna's ``find_DE_markers`` function.
 
 .. code-block:: python
 
@@ -338,4 +376,3 @@ References
 ----------
 
 .. [1] Phillips, D., Matusiak, M., Gutierrez, B. R., Bhate, S. S., Barlow, G. L., Jiang, S., ... & Nolan, G. P. (2021). Immune cell topography predicts response to PD-1 blockade in cutaneous T cell lymphoma. Nature communications, 12(1), 6726.
-
