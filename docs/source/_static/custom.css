@@ -1,10 +1,35 @@
-/* Apply to all paragraphs */
-body {
+/* =============================
+   Justify main documentation text
+   ============================= */
+
+/* Scope to the main content container */
+.wy-nav-content {
     text-align: justify;
+    text-justify: inter-word;
 }
 
-/* Optional: improve spacing between words */
-p {
+/* Explicitly justify paragraphs in the main content area */
+.wy-nav-content p {
     text-align: justify;
-    text-justify: inter-word; /* Better word spacing for justification */
+    text-justify: inter-word;
+}
+
+/* =============================
+   Preserve alignment in navigation and code blocks
+   ============================= */
+
+/* Sidebar and menu should stay left-aligned */
+.wy-side-nav-search,
+.wy-nav-side,
+.wy-menu,
+.wy-menu-vertical {
+    text-align: left !important;
+}
+
+/* Keep code blocks and literal blocks left-aligned */
+pre,
+code,
+.rst-content tt,
+.rst-content code {
+    text-align: left !important;
 }
