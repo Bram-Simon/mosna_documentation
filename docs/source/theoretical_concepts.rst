@@ -2,7 +2,7 @@ Theoretical Concepts
 ====================
 
 Here, we provide some background on concepts such as assortativity and Delaunay triangulation.
-For practical examples of how to implement mosna, skip ahead to the `How to Guides <https://mosna-documentation.readthedocs.io/en/latest/how_to_guides.html>`_
+For practical examples of how to implement mosna, skip ahead to the `How to Guides <https://mosna-documentation.readthedocs.io/en/latest/how_to_guides.html>`_.
 
 .. _assortativity:
 
@@ -28,16 +28,16 @@ This could enable biomarker discovery.
 
 **Network Attribute Randomization**
 
-However, calculating assortativity is not a straightforward task. The relative proportion of cell types in the network affects the apparent assortativity: if there are many cells
+Calculating assortativity is not a straightforward task.
+We consider that the relative proportion of cell types in the network affects the apparent assortativity: if there are many cells
 of the same type in a network, most of the edges in that network will be between cells of
-the same type [3]_. As a result the network will appear very assortative [3]_. To correct
-for this, MOSNA performs network attribute randomization, shuffling the assignment of values of each attribute to the cells [3]_.
+the same type [3]_. As a result the network will appear very assortative [3]_.
+Such imbalance in cell type proportions must be corrected for.
+To do so, MOSNA performs network attribute randomization, shuffling the assignment of values of each attribute to the cells [3]_.
+This process is then repeated N times.
 With this method, the number of cells that are positive for each attribute and the links between the cells are preserved.
 
-In MOSNA, the 'N_shuffle' parameter is used for this purpose, by specifying the number of randomizations. This process is then repeated N times. It is important to choose the
-number of randomizations high enough so that all phenotypes in a sample get satisfactory coverage. Especially when several cell types occur far fewer in a sample than others,
-interactions between these types are more rare. A higher number of randomizations is
-then required.
+
 
 Delaunay Triangulation
 ----------------------

@@ -42,9 +42,13 @@ The function ``build_delaunay`` calculates the edges of the network based on the
 
 
 
-**Use Trimming to Improve Network Construction**
+**Adaptive Edge Trimming**
 
-Next, we will refine the network by removing long-distance connections, which are unlikely to represent real cellular interactions.
+Next, we will clean the network from reconstruction artifacts. In particular,
+we will remove long-distance connections, which are unlikely to represent real cellular interactions.
+For this purpose, we leverage tysserand to perform adaptive edge trimming.
+
+
 
 .. code-block:: python
 
@@ -61,6 +65,9 @@ Next, we will refine the network by removing long-distance connections, which ar
 - ``n_edges=3`` ensures that each node has at least 3 connections
 - ``trim_dist`` defines the maximum allowed edge length, in this case 150
 - ``trim_dist_ratio=2`` sets distance ratio to help define which edges need to be removed
+
+With ``trim_dist_ratio`` set to two, as in the example above, any edge with length above twice the third shortest edge are removed.
+
 
 
 **Color Mapping**
@@ -356,7 +363,7 @@ Now we can again compare the groups:
       )
   fig.suptitle("Ratio of cell type proportions per response group (imputed)", y=1.0);
 
-This results in the following figure:
+This results in the following figure, which includes significant differences between responders/non-responders only:
 
 .. image:: images/img4_ratio_comparison.png
    :alt: Example result
