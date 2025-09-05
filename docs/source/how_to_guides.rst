@@ -21,19 +21,90 @@ In this how-to guide we discuss how to:
 - identify and visualize cellular niches with mosna (to do)
 
 
-Generate and Visualize Spatial Networks
----------------------------------------
 
-Tysserand generates computational networks that can subsequently be analyzed with mosna.
-To generate such networks with tysserand, we need to provide it with the spatial coordinates of the nodes, which can either be individual cells
-or spots (such as in Visium 10X genomics). The nodes should be provided as a numpy array of shape ``(n_nodes, 2)``, where the first column contains the
-x-coordinates and the second column contains the y-coordinates \footnote{It is also possible to provide 3D coordinates}.
-Assuming we have a pandas dataframe ``group`` with columns ``X_position`` and ``Y_position`` that specify the spatial coordinates of the nodes, 
-we can use the following code to generate the network:
+Imports and Setup
+-----------------
+
+In this tutorial we assume that you have a directory containing various single-cell data files in CSV format.
+
+We begin by importing required packages, including tysserand.
+
+
 
 .. code-block:: console
 
-  df_nodes = group[['X_position', 'Y_position']]
+  import numpy as np
+  import pandas as pd
+
+  from pathlib import Path
+
+  import tysserand.tysserand as ty
+  print(ty.__file__)
+
+  import mosna
+  print(mosna.__file__)
+
+
+Then, we set relevant paths and load our data.
+
+.. code-block:: console
+
+  base_dir = Path("..")
+
+  mIF_path = base_dir / "raw" / "single_cell_data" # Replace single_cell_data with your directory name
+
+  csv_files = list(mIF_path.glob("*.csv"))
+  print(len(csv_files), "files found")
+
+  # Load all files into a dict of dataframes
+  dfs = {f.stem: pd.read_csv(f) for f in csv_files}
+
+
+
+
+
+
+We show a single file. In the figure below we show what our input single-cell data files are expected to look like. Each row corresponds to an individual cell.
+Columns should include the x- and y-coordinates a cluster / phenotype assignment, and the corresponding patient and region of interest (ROI) a sample belongs to.
+
+
+
+
+.. code-block:: console
+
+  # Access single file, in our example file "A_01", which could correspond to patient A, ROI 01.
+  df_A01 = dfs["A_01"]
+  display(df_A01)
+
+
+
+.. image:: images/img_5_example_single_cell_CSV.png
+   :alt: Example result
+   :width: 94%
+   :align: center
+
+
+
+
+
+Generate and Visualize Spatial Networks
+---------------------------------------
+
+Tysserand generates computational networks that can subsequently be analyzed with mosna. Additionally, it provides functionality to visualize these networks.
+In this section, we will show how to do this. We first take a single CSV file as input. Then, we will show a function that automates this for a directory of CSV files.
+
+To generate computational networks with tysserand, we need to provide it with the spatial coordinates of the nodes, which can either be individual cells
+or spots (such as in Visium 10X genomics). The nodes should be provided as a numpy array of shape ``(n_nodes, 2)``, where the first column contains the
+x-coordinates and the second column contains the y-coordinates \footnote{It is also possible to provide 3D coordinates}.
+Assuming we have a pandas dataframe ``group`` with columns ``X_position`` and ``Y_position`` that specify the spatial coordinates of the nodes, 
+we can use the following code to generate the network, using default parameters.
+
+.. code-block:: console
+
+  # We access a single file, corresponding to patient A and region of interest 01.
+  df_A01 = dfs["A_01"]
+
+  df_nodes = df_A01[['X_position', 'Y_position']]
   df_nodes.columns = ['X_position', 'Y_position']
   np_array_nodes = df_nodes.values
   np_array_edges = ty.build_delaunay(np_array_nodes)
@@ -46,14 +117,15 @@ The function ``build_delaunay`` calculates the edges of the network based on the
 
 Next, we will clean the network from reconstruction artifacts. In particular,
 we will remove long-distance connections, which are unlikely to represent real cellular interactions.
-For this purpose, we leverage tysserand to perform adaptive edge trimming.
+For this purpose, tysserand performs adaptive edge trimming.
+Again, we use the ``ty.build_delaunay()``, but now we set various parameters.
 
 
 
 .. code-block:: python
 
   pairs = ty.build_delaunay(
-        coords, 
+        coords=np_array_nodes, 
         node_adaptive_trimming=True, 
         n_edges=3, 
         trim_dist_ratio=2,
@@ -72,10 +144,17 @@ With ``trim_dist_ratio`` set to two, as in the example above, any edge with leng
 
 **Color Mapping**
 
+
+
 Given a set of unique attributes (e.g. phenotypes) ``uniq``, we can generate a color mapping as follows.
 
 .. code-block:: python
 
+  # In our clustermap, we want each cell to have the collor that corresponds to its assigned cell type.
+  uniq = df_A01["Cluster"].unique()
+  n_colors = len(uniq)
+
+  # Generate colormap
   clusters_cmap = mosna.make_cluster_cmap(uniq)
   celltypes_color_mapper = {x: clusters_cmap[i % n_colors] for i, x in enumerate(uniq)}
 
@@ -114,8 +193,8 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
         legend_opt={'fontsize': 52, 'bbox_to_anchor': (0.96, 1), 'loc': 'upper left'},
         size_nodes=60,
         color_mapper=color_mapper,
-        cmap_nodes=cmap_nodes,
-        ax=ax  # Ensure you pass the axis here
+        #cmap_nodes=cmap_nodes,
+        #ax=ax  # Optional
     )
 
 
@@ -131,6 +210,57 @@ Now we are ready to plot the network using tysserand's built-in plotting functio
    <br><br>
    <br><br>
 
+
+**Putting it all Together**
+
+The steps described above, can be automated for a directory with several CSV files, using the function below.
+
+.. code-block:: python
+
+  def generate_network_plots(all_data)
+  # Generate Color Map
+  uniq = all_data["Cluster"].unique()
+  print(uniq)
+  clusters_cmap = make_cluster_cmap(uniq)
+  n_colors = len(uniq)
+  celltypes_color_mapper = {x: clusters_cmap[i % n_colors] for i, x in enumerate(uniq)}
+
+
+  df_patient_id = all_data["Patient_ID"]
+  df_ROI_id = all_data["ROI_ID"]
+
+  grouped_df = all_data.groupby(['Patient_ID', 'ROI_ID'])
+
+  for (patient_id, roi_id), group in tqdm(grouped_df):
+
+      df_nodes = group[['X_position', 'Y_position']].copy()
+
+      print(f"Patient {patient_id}, ROI {roi_id}, {len(df_nodes)} nodes")
+      print(df_nodes.head())
+
+      df_nodes.columns = ["X_position", "Y_position"]
+      np_array_nodes = df_nodes.values
+      
+      pairs = ty.build_delaunay(
+        coords=np_array_nodes,
+        node_adaptive_trimming=True,
+        n_edges=3,
+        trim_dist_ratio=2,
+        min_dist=0,
+        trim_dist=150,
+    )
+      
+      pairs = ty.link_solitaries(np_array_nodes, np_array_edges, method='delaunay', min_neighbors=3)
+
+
+      unique_filename_network_plot = f"{df_patient_id}_{df_ROI_id}_network_plot.png"
+      output_path_network_plot = network_plots_path / unique_filename_network_plot
+      plt.savefig(output_path_network_plot)
+
+  all_data = pd.concat(
+    (pd.read_csv(f).assign(source=f.stem) for f in csv_files),
+    ignore_index=True
+  generate_network_plots(all_data)
 
 
 
