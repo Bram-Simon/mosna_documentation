@@ -31,7 +31,7 @@ We begin by importing required packages, including tysserand.
 
 
 
-.. code-block:: console
+.. code-block:: python
 
   import numpy as np
   import pandas as pd
@@ -47,7 +47,7 @@ We begin by importing required packages, including tysserand.
 
 Then, we set relevant paths and load our data.
 
-.. code-block:: console
+.. code-block:: python
 
   base_dir = Path("..")
 
@@ -70,7 +70,7 @@ Columns should include the x- and y-coordinates a cluster / phenotype assignment
 
 
 
-.. code-block:: console
+.. code-block:: python
 
   # Access single file, in our example file "A_01", which could correspond to patient A, ROI 01.
   df_A01 = dfs["A_01"]
@@ -105,7 +105,7 @@ x-coordinates and the second column contains the y-coordinates \footnote{It is a
 Assuming we have a pandas dataframe ``group`` with columns ``X_position`` and ``Y_position`` that specify the spatial coordinates of the nodes, 
 we can use the following code to generate the network, using default parameters.
 
-.. code-block:: console
+.. code-block:: python
 
   # We access a single file, corresponding to patient A and region of interest 01.
   df_A01 = dfs["A_01"]
