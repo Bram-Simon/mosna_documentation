@@ -84,6 +84,7 @@ Columns should include the x- and y-coordinates a cluster / phenotype assignment
    :align: center
 
 
+Here, the ``Cluster`` column contains phenotype labels.
 
 
 
