@@ -228,8 +228,8 @@ while preserving the present biological variation.
 
 
 
-Comparing Response Groups and Survival analysis
------------------------------------------------
+Comparing Response Groups - Composition
+---------------------------------------
 
 Mosna can help identify differences in the immune landscape between the groups, through comparisons between response groups.
 As outlined earlier, we will compare increasingly complex characteristics (compositional differences -> assortativity -> niches)
@@ -389,17 +389,22 @@ When producing second order ratios, equivalent and inverse ratios are avoided.
 For example, (a/b)/(c/d) is included, but (a/c)/(b/d) not, as this would be the inverse.
 (a/b)/(a/d) will be excluded, as it simplifies to (d/b), which is a first order ratio.
 
+Subsequently, the same code as before can be used to visualize differences in second order ratios between groups.
+
 Higher order ratios are currently not incorporated.
 
 
 
-**Assortativity and Mixing Matrices**
+**Mixing Matrices Intermezzo - An Example**
 
-After looking at the fractional cell abundances, we move towards the next step of complexity: patterns of preferential interactions between cell-types.
+After looking at the fractional cell abundances, we move towards the next step of complexity:
+patterns of preferential interactions between cell-types.
 Assortativity analysis in mosna allows you to quantify preferential interactions between nodes with different attributes (e.g. cell types).
 Moreover, z-scores can be calculated to show the statistical significance of these preferential interactions.
 These assortativity z-scores can be ordered in a mixing matrix.
-An example is provided in the figure below, where we have used cell phenotypes as attributes.
+Before incorporating assortativity in our comparison between response and non-response groups,
+we will first discuss an example of a mixing matrix, which is shown below.
+In this example we make use of IMC data of 7 patients, in which cellular phenotypes have been assigned as attributes to the nodes.
 
 
 
@@ -454,6 +459,17 @@ Subsequently, we can populate the mixing matrix as follows:
         edges, 
         attributes=[attributes[i], attributes[j]]
     )
+
+
+
+Comparing Response Groups - Assortativity
+-----------------------------------------
+
+
+
+
+
+
 
 
 
