@@ -85,13 +85,11 @@ Columns should include the x- and y-coordinates a cluster / phenotype assignment
 
 
 .. raw:: html
-  
-   <br><br>
+
    <br><br>
    <br><br>
 
 
-Here, the ``Cluster`` column contains phenotype labels.
 
 
 
