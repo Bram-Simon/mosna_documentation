@@ -223,49 +223,64 @@ The steps described above, can be automated for a directory with several CSV fil
 
 .. code-block:: python
 
-  def generate_network_plots(all_data)
-  # Generate Color Map
-  uniq = all_data["Cluster"].unique()
-  print(uniq)
-  clusters_cmap = make_cluster_cmap(uniq)
-  n_colors = len(uniq)
-  celltypes_color_mapper = {x: clusters_cmap[i % n_colors] for i, x in enumerate(uniq)}
+  def generate_network_plots(all_data):
+  
+    # Generate Color Map
+    uniq = all_data["Cluster"].unique()
+    clusters_cmap = make_cluster_cmap(uniq)
+    n_colors = len(uniq)
+    celltypes_color_mapper = {x: clusters_cmap[i % n_colors] for i, x in enumerate(uniq)}
 
 
-  df_patient_id = all_data["Patient_ID"]
-  df_ROI_id = all_data["ROI_ID"]
+    df_patient_id = all_data["Patient_ID"]
+    df_ROI_id = all_data["ROI_ID"]
 
-  grouped_df = all_data.groupby(['Patient_ID', 'ROI_ID'])
+    grouped_df = all_data.groupby(['Patient_ID', 'ROI_ID'])
 
-  for (patient_id, roi_id), group in tqdm(grouped_df):
+    for (patient_id, roi_id), group in tqdm(grouped_df):
 
-      df_nodes = group[['X_position', 'Y_position']].copy()
+        df_nodes = group[['X_position', 'Y_position']].copy()
 
-      print(f"Patient {patient_id}, ROI {roi_id}, {len(df_nodes)} nodes")
-      print(df_nodes.head())
+        df_nodes.columns = ["X_position", "Y_position"]
+        np_array_nodes = df_nodes.values
+        
+        pairs = ty.build_delaunay(
+          coords=np_array_nodes,
+          node_adaptive_trimming=True,
+          n_edges=3,
+          trim_dist_ratio=2,
+          min_dist=0,
+          trim_dist=150,
+        )
+        
+        pairs = ty.link_solitaries(np_array_nodes, pairs, method='delaunay', min_neighbors=3)
+        distances = ty.distance_neighbors(np_array_nodes, pairs)
+        df_cluster_id = group["Cluster"]
 
-      df_nodes.columns = ["X_position", "Y_position"]
-      np_array_nodes = df_nodes.values
-      
-      pairs = ty.build_delaunay(
-        coords=np_array_nodes,
-        node_adaptive_trimming=True,
-        n_edges=3,
-        trim_dist_ratio=2,
-        min_dist=0,
-        trim_dist=150,
-    )
-      
-      pairs = ty.link_solitaries(np_array_nodes, np_array_edges, method='delaunay', min_neighbors=3)
+        ty.plot_network_distances(
+          np_array_nodes,
+          pairs,
+          distances,
+          labels=df_cluster_id,
+          figsize=(100,100),     # The resolution of the resulting image depends on this. Notice that (100, 100) will generate a very detailed network,
+                                # but may require significant computational time for generating the network.
+          legend_opt={'fontsize': 52, 'loc': 'upper left'},    #'bbox_to_anchor': (0.96, 1), 'loc': 'upper left'},
+          size_nodes=60,
+          color_mapper=celltypes_color_mapper,
+          #cmap_nodes=cmap_nodes,
+          #ax=ax  # Ensure you pass the axis here
+          )
 
+        unique_filename_network_plot = f"{patient_id}_{roi_id}_network_plot.png"
 
-      unique_filename_network_plot = f"{df_patient_id}_{df_ROI_id}_network_plot.png"
-      output_path_network_plot = network_plots_path / unique_filename_network_plot
-      plt.savefig(output_path_network_plot)
+        output_path_network_plot = network_plots_path / unique_filename_network_plot
+        
+        plt.savefig(output_path_network_plot)
+        plt.close()
 
-  all_data = pd.concat(
-    (pd.read_csv(f).assign(source=f.stem) for f in csv_files),
-    ignore_index=True
+  network_plots_path.mkdir(parents=True, exist_ok=True)
+
+  all_data = df_all_phenotypes.copy()
   generate_network_plots(all_data)
 
 
