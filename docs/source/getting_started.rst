@@ -30,6 +30,20 @@ Then, install some essential dependencies:
   pip install scipy==1.13
 
 
+Alternatively, you can create a new Conda environment that has tysserand, mosna and all their dependencies installed:
+
+.. code-block:: bash
+  conda env create -f mosna.yml
+
+or copy the YAML content directly:
+
+.. literalinclude:: mosna.yml
+  :language: yaml
+  :linenos:
+
+or, if you prefer, you can download the Conda environment file here:
+
+* :download:`mosna.yml <mosna.yml>`
 
 
 
