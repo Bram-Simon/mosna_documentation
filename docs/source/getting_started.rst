@@ -33,6 +33,7 @@ Then, install some essential dependencies:
 Alternatively, you can create a new Conda environment that has tysserand, mosna and all their dependencies installed:
 
 .. code-block:: bash
+  
   conda env create -f mosna.yml
 
 or copy the YAML content directly:
