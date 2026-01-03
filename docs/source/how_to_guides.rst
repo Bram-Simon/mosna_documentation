@@ -408,9 +408,11 @@ in subsequent steps.
 
 .. code-block:: python
 
-  nodes_all = obj[pos_cols + [pheno_col]].copy()
-  nodes_all = nodes_all.join(pd.get_dummies(obj[pheno_col]))
-  uniq_phenotypes = nodes_all[pheno_col].unique() 
+  pos_cols = ["X_position", "Y_position"]
+  pheno_col = "Cluster"
+  nodes_all = df_all_phenotypes[pos_cols + [pheno_col]].copy()
+  nodes_all = nodes_all.join(pd.get_dummies(df_all_phenotypes[pheno_col]))
+  uniq_phenotypes = nodes_all[pheno_col].unique()
 
 
 
