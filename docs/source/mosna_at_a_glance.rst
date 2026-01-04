@@ -1,7 +1,8 @@
 Mosna at a Glance
 =================
 
-MOSNA is a Python library designed for the analysis of spatial omics data in combination with clinical or biological metadata. It enables researchers to explore cellular interactions, tissue organization, and predictive biomarkers through an intuitive pipeline.
+The Multi-Omics Spatial Networks Analysis library (mosna) is a Python library designed for the analysis of spatial omics data in combination with clinical or biological metadata.
+Mosna enables researchers to explore cellular interactions, tissue organization, and predictive biomarkers through an intuitive pipeline.
 
 Key Features:
 
