@@ -622,6 +622,112 @@ Comparing Response Groups - Assortativity
 
 
 
+Implementing a Cox Proportional Hazards Model
+---------------------------------------------
+
+Mosna contains various functions that make it easier to implement a Cox Proportional Hazards (CPH) regression model.
+For background reading on CPH models, we recommend the review by [2]_.
+
+In its basic form, the CPH model assumes that the hazard ratio remains constant over time.
+Additionally, it requires an assumption about the original form of the survival function s(t) [2]_.
+In the CPH regression model the function is assumed to be exponention [2]_.
+Under these assumptions, the hazard ratio of each covariate can be estimated.
+
+In the example below, we implement a Cox Proportional Hazards (CPH) regression model. To do so, We first obtain survival coefficients
+(the log transform of the Hazard ratio) with CoxPHFitter from the lifelines Python package. Then we use mosna's plot_survival_coeffs()
+function to visualize the survival coefficients with their 95% confidence intervals.
+Additionally, we will use functions from mosna to identify the threshold that best separates survival outcomes, given a certain condition.
+
+
+Using CoxPHFitter from lifelines, we obtain survival coefficients for a set of covariates. In this case the co-variates are cell proportions
+(e.g. TAM) and ratios of cell proportions (M1 / TAM).
+
+.. code-block:: python
+
+  from lifelines import CoxPHFitter
+
+  df_for_coxph = df_abund_prop_clin.copy()
+  print(df_for_coxph["duration_col"].dtype)
+  print(df_for_coxph["event_col"].dtype)
+  df_for_coxph["event_col"] = pd.to_numeric(df_for_coxph["event_col"], errors="coerce").astype(int)
+  print(df_for_coxph["event_col"].dtype)
+
+  df_for_coxph = df_for_coxph.dropna()
+  display(df_for_coxph)
+
+  cph = CoxPHFitter(penalizer=0.0001)
+  covariates = ["M1", "M2", "Other", "TAM", "M1 / M2", "M1 / Other", "M1 / TAM", "M2 / Other", "M2 / TAM", "Other / TAM"]
+  cols = ["duration_col", "event_col"] + covariates
+  cph.fit(df_for_coxph[cols], duration_col="duration_col", event_col="event_col")
+
+  cph.print_summary()
+
+
+.. image:: images/img6_survival_coefficients.png
+   :alt: Example result
+   :width: 94%
+   :align: center
+
+
+Now, we can use mosna's plot_survival_coeffs function to visualize the survival coefficients, with 95% confidence intervals.
+
+.. code-block:: python
+
+  # Plot coefficients
+  ax = mosna.plot_survival_coeffs(
+      model=cph, 
+      data=df_for_coxph,
+      )
+
+  path_cph = output_dir / "cox_ph"
+  path_cph.mkdir(parents=True, exist_ok=True)
+  # ax.set_title(f'n sig: {n_sig} {str_params}')
+  figname = f"{fig_step}_CoxPH_coefficients.jpg"
+  plt.savefig(path_cph / figname, bbox_inches='tight', facecolor='white', dpi=600)
+  plt.show()
+
+
+
+
+.. image:: images/img7_survival_given_TAM_threshold.png
+   :alt: Example result
+   :width: 94%
+   :align: center
+
+
+
+
+Finally, we use mosna to identify the threshold that best separates survival outcomes (or response) for a certain co-variate.
+In the figure below we show the resulting graph for the co-variate TAM, which is the fractional abundance of tumor associated macrophages (TAMs).
+Here, the 'best-threshold' is the concentration of TAMs at which the survival outcomes are best separated if all samples with lower TAM concentration
+are assigned to a group 1 and all samples with a higher TAM concentration to a group 2.
+
+
+.. code-block:: python
+
+  coefs_sig = ["M1", "M2", "Other", "TAM"]
+  km_figsize = (8, 5)
+
+  for variable_name in coefs_sig:
+
+  best_thresh, best_perc, best_p_val = mosna.find_best_survival_threshold(df_for_coxph, variable_name, "duration_col", "event_col")
+  print(variable_name)
+  print(f'best_thresh: {best_thresh:.3g}')
+  print(f'best_perc: {best_perc:.3g}')
+  print(f'best_p_val: {best_p_val:.3g}')
+
+  mosna.plot_survival_threshold(df_for_coxph, variable_name, "duration_col", "event_col", best_thresh)#, figsize=km_figsize)
+  figname = f"{fig_step}_survival_curves_{variable_name}.jpg"
+  plt.savefig(path_cph / figname, bbox_inches='tight', facecolor='white', dpi=600)
+  plt.show()
+
+
+
+
+
+
+
+
 
 
 
@@ -631,3 +737,5 @@ References
 ----------
 
 .. [1] Phillips, D., Matusiak, M., Gutierrez, B. R., Bhate, S. S., Barlow, G. L., Jiang, S., ... & Nolan, G. P. (2021). Immune cell topography predicts response to PD-1 blockade in cutaneous T cell lymphoma. Nature communications, 12(1), 6726.
+.. [2] Lee, S. W. (2023). Kaplan-Meier and Cox proportional hazards regression in survival analysis: statistical standard and guideline of Life Cycle Committee. Life Cycle, 3.
+
