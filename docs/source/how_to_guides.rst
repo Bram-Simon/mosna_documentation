@@ -663,11 +663,6 @@ Using CoxPHFitter from lifelines, we obtain survival coefficients for a set of c
   cph.print_summary()
 
 
-.. image:: images/img6_survival_coefficients.png
-   :alt: Example result
-   :width: 94%
-   :align: center
-
 
 Now, we can use mosna's plot_survival_coeffs function to visualize the survival coefficients, with 95% confidence intervals.
 
@@ -688,8 +683,7 @@ Now, we can use mosna's plot_survival_coeffs function to visualize the survival 
 
 
 
-
-.. image:: images/img7_survival_given_TAM_threshold.png
+.. image:: images/img6_survival_coefficients.png
    :alt: Example result
    :width: 94%
    :align: center
@@ -726,6 +720,10 @@ are assigned to a group 1 and all samples with a higher TAM concentration to a g
 
 
 
+.. image:: images/img7_survival_given_TAM_threshold.png
+   :alt: Example result
+   :width: 94%
+   :align: center
 
 
 
